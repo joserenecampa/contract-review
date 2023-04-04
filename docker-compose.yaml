@@ -1,0 +1,11 @@
+services:
+
+  server:
+    image: tomee:9-jre11-alpine-microprofile
+    ports:
+      - 8080:8080
+      - 8000:8000
+    environment:
+      - CATALINA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
+    volumes:
+      - ./rest/target/rest.war:/usr/local/tomee/webapps/rest.war
