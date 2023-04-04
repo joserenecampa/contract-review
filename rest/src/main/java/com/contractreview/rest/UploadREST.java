@@ -1,16 +1,28 @@
 package com.contractreview.rest;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
+import java.io.IOException;
 
-@Path("/upload")
+import jakarta.ejb.EJB;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+@Path("/analysis") @Consumes @Produces
 public class UploadREST {
 
-    @GET
-    public Response upload() {
-        return Response.status(Status.OK).entity("OK").build();
-    }
-    
+    @EJB
+    ParseContract parse;
+
+    @POST
+    @Path("/convert-pdf")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String convertPDFToText(ContractDocument contract, @HeaderParam("similaridade") boolean similaridade) throws IOException {
+        String result = parse.parse(contract.getContent(), similaridade);
+        return result;
+    }    
+
 }

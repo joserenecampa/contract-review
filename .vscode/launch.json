@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ParseContract",
+            "request": "launch",
+            "mainClass": "com.contractreview.rest.ParseContract",
+            "projectName": "rest"
+        },
+        {
+            "type": "java",
             "name": "TommEE Debug",
             "request": "attach",
             "hostName": "localhost",

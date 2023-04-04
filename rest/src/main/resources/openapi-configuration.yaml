@@ -8,6 +8,7 @@ openAPI:
     title: Contract Review
     description: 'This is a sample server for Contract Review'
     termsOfService: http://www.apache.org/licenses/LICENSE-2.0.html
+    basePath: /rest
     contact:
       email: joserene.campa@gmail.com
     license:

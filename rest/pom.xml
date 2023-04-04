@@ -31,6 +31,21 @@
 			<scope>provided</scope>
 		</dependency>
     <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.pdfbox</groupId>
+      <artifactId>pdfbox</artifactId>
+      <version>2.0.27</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -103,7 +118,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>target/rest</outputDirectory>
+              <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
               <resources>
                 <resource>
                   <directory>${project.build.directory}/swagger-ui-master/dist</directory>

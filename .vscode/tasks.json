@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Tomcat",
+            "type": "shell",
+            "command": "docker-compose up",
+            "problemMatcher": []
+        },
+        {
+            "label": "Reestart Tomcat",
+            "type": "shell",
+            "command": "docker-compose restart",
+            "problemMatcher": []
+        },
+        {
+            "label": "Package",
+            "type": "shell",
+            "command": "mvn clean package -f rest/pom.xml",
+            "problemMatcher": []
+        }
+
+    ]
+}
