@@ -28,6 +28,8 @@ public class ParseContract {
             stripper.setIndentThreshold(5);
             stripper.setSpacingTolerance(5);
 
+            stripper.setSuppressDuplicateOverlappingText(true);
+
             for (int p = 1; p <= document.getNumberOfPages(); ++p) {
                 stripper.setStartPage(p);
                 stripper.setEndPage(p);
@@ -36,9 +38,9 @@ public class ParseContract {
             }
         }
         if (similaridades) {
-            return removerLinhasSimilares(result.toString());
+            return removerLinhasSimilares(result.toString()).trim();
         } else {
-            return result.toString();
+            return result.toString().trim();
         }
     }
 
@@ -48,20 +50,25 @@ public class ParseContract {
         for (int i = 0; i < linhas.length; i++) {
             boolean similar = false;
             int total = 0;
-            for (int j = 0; j < linhas.length; j++) {
-                if (i != j) {
-                    int distance = LevenshteinDistance.getDefaultInstance().apply(linhas[i], linhas[j]);
-                    if (distance < 3) {
-                        similar = true;
-                        total = total + 1;
+            if (linhas[i].equals("") || linhas[i].equals("\n") || linhas[i].trim().equals("")) {
+                result = result + linhas[i] + "\n";
+            } else {
+                for (int j = 0; j < linhas.length; j++) {
+                    if (i != j) {
+                        int distance = LevenshteinDistance.getDefaultInstance().apply(linhas[i], linhas[j]);
+                        long pct = 0;
+                        if (linhas[i].length() > 0) {
+                            pct = (distance * 100) / linhas[i].length();
+                        }
+                        if (distance < 3 && pct < 15) {
+                            similar = true;
+                            total = total + 1;
+                        }
                     }
                 }
-            }
-            if ((!similar) || (similar && total < 3)) {
-                result = result + linhas[i] + "\n";
-            }
-            if (linhas[i].equals("") || linhas[i].equals("\n")) {
-                result = result + linhas[i] + "\n";
+                if ((!similar) || (similar && total < 3)) {
+                    result = result + linhas[i] + "\n";
+                }    
             }
         }
         return result;
