@@ -66,6 +66,11 @@
       <artifactId>service</artifactId>
       <version>0.12.0</version>       
     </dependency>
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>2.1.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -118,6 +123,54 @@
               <url>https://github.com/swagger-api/swagger-ui/archive/master.tar.gz</url>
               <unpack>true</unpack>
               <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pt-token</id>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <skipCache>true</skipCache>
+              <url>https://opennlp.sourceforge.net/models-1.5/pt-token.bin</url>
+              <unpack>false</unpack>
+              <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pt-sent</id>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <skipCache>true</skipCache>
+              <url>https://opennlp.sourceforge.net/models-1.5/pt-sent.bin</url>
+              <unpack>false</unpack>
+              <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pt-pos-maxent</id>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <skipCache>true</skipCache>
+              <url>https://opennlp.sourceforge.net/models-1.5/pt-pos-maxent.bin</url>
+              <unpack>false</unpack>
+              <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pt-pos-perceptron</id>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <skipCache>true</skipCache>
+              <url>https://opennlp.sourceforge.net/models-1.5/pt-pos-perceptron.bin</url>
+              <unpack>false</unpack>
+              <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
             </configuration>
           </execution>
         </executions>
