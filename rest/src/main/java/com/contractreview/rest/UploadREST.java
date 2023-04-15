@@ -26,12 +26,12 @@ public class UploadREST {
     }
 
     @POST
-    @Path("/convert-to-fine-tune")
+    @Path("/convert-to-jsonl")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
     public String convertToFineTune(ContractDocument contract, @HeaderParam("similaridade") boolean similaridade) throws IOException {
         String result = parse.parse(contract.getContent(), similaridade);
-        return result;
+        return parse.toJSONL(result);
     }
 
 }

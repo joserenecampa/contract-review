@@ -5,11 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.text.PDFTextStripper;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import jakarta.ejb.Stateless;
 import opennlp.tools.sentdetect.SentenceDetectorME;
@@ -62,10 +67,11 @@ public class ParseContract {
         try (InputStream modelIn = new FileInputStream("/usr/local/tomee/webapps/rest/WEB-INF/classes/pt-sent.bin")) {
             SentenceModel model = new SentenceModel(modelIn);
             SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
-            // NewlineSentenceDetector sentenceDetector = new NewlineSentenceDetector();
             String sentences[] = sentenceDetector.sentDetect(texto);
             for (String sentence : sentences) {
-                result.append(tokenizar(sentence)).append("\n");
+                String line = tokenizar(sentence);
+                if (line != null)
+                    result.append(line).append("\n");
             }
         } catch(Throwable error) {
             throw new RuntimeException(error);
@@ -78,7 +84,10 @@ public class ParseContract {
             TokenizerModel model = new TokenizerModel(modelIn);
             Tokenizer tokenizer = new TokenizerME(model);
             String tokens[] = tokenizer.tokenize(texto);
-            return destokenizar(tokens);
+            if (tokens.length > 5)
+                return destokenizar(tokens);
+            else
+                return null;
         } catch (Throwable error) {
             throw new RuntimeException(error);
         }
@@ -127,6 +136,18 @@ public class ParseContract {
             }
         }
         return result;
+    }
+
+    public String toJSONL(String texto) {
+        List<String> lines = Arrays.asList(texto.split("\n"));
+        StringBuilder jsonl = new StringBuilder();
+        for (String line : lines) {
+            JsonObject json = new JsonObject();
+            json.addProperty("text", line);
+            json.addProperty("category", "contract");
+            jsonl.append(new Gson().toJson(json)).append("\n");
+        }
+        return jsonl.toString();
     }
 
     public static void main(String[] args) throws Throwable {
