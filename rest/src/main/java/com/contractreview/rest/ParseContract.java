@@ -51,7 +51,7 @@ public class ParseContract {
             }
         }
         if (similaridades) {
-            return removerLinhasSimilares(result.toString()).trim();
+            return normalizar(removerLinhasSimilares(result.toString()).trim());
         } else {
             return result.toString().trim();
         }
@@ -59,9 +59,10 @@ public class ParseContract {
 
     public String normalizar(String texto) {
         StringBuilder result = new StringBuilder();
-        try (InputStream modelIn = new FileInputStream("/home/s092756437/dev/workspace-contract-review/rest/src/main/resources/pt-sent.bin")) {
+        try (InputStream modelIn = new FileInputStream("/usr/local/tomee/webapps/rest/WEB-INF/classes/pt-sent.bin")) {
             SentenceModel model = new SentenceModel(modelIn);
             SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
+            // NewlineSentenceDetector sentenceDetector = new NewlineSentenceDetector();
             String sentences[] = sentenceDetector.sentDetect(texto);
             for (String sentence : sentences) {
                 result.append(tokenizar(sentence)).append("\n");
@@ -73,7 +74,7 @@ public class ParseContract {
     }
 
     public String tokenizar(String texto) {
-        try (InputStream modelIn = new FileInputStream("/home/s092756437/dev/workspace-contract-review/rest/src/main/resources/pt-token.bin")) {
+        try (InputStream modelIn = new FileInputStream("/usr/local/tomee/webapps/rest/WEB-INF/classes/pt-token.bin")) {
             TokenizerModel model = new TokenizerModel(modelIn);
             Tokenizer tokenizer = new TokenizerME(model);
             String tokens[] = tokenizer.tokenize(texto);
@@ -129,7 +130,7 @@ public class ParseContract {
     }
 
     public static void main(String[] args) throws Throwable {
-        byte[] content = Files.readAllBytes(Paths.get("/home/s092756437/dev/workspace-contract-review/saida.txt"));
+        byte[] content = Files.readAllBytes(Paths.get("/home/rene/dev/workspace-contract-review/contract-review/saida.txt"));
         ParseContract c = new ParseContract();
         String texto = c.normalizar(new String(content));
         System.out.println(texto);
